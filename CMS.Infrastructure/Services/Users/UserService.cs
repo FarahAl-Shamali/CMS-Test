@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CMS.Core.Constants;
+
 using CMS.Core.DTOs;
 using CMS.Core.Exceptions;
 using CMS.Core.ViewModels;
@@ -18,7 +19,7 @@ using System.Text;
 
 namespace CMS.Infrastructure.Services.Users
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly CMSDbContext _db;
         private readonly IFileService _fileService;
@@ -34,13 +35,34 @@ namespace CMS.Infrastructure.Services.Users
             _fileService = fileService;
             _emailService = emailService;
         }
-        public async Task<List<UserViewModel>> GetAll()
+        public async Task<ResponseDto> GetAll(Pagination pagination, Query query)
         {
-            var users =await _db.Users.Where(x => !x.IsDelete).ToListAsync();
-            return _mapper.Map<List<UserViewModel>>(users);
-        
+            var queryString = _db.Users.Where(x => !x.IsDelete &&
+                 (x.FullName.Contains(query.GeneralSearch))||
+                 (x.Email.Contains(query.GeneralSearch))||
+                 (x.PhoneNumber.Contains(query.GeneralSearch))||
+                 string.IsNullOrWhiteSpace(query.GeneralSearch))
+                .AsQueryable();
+
+            var dataCount = queryString.Count();
+            var skipValue = pagination.GetSkipValue();
+            var dataList = await queryString.Skip(skipValue).Take(pagination.PerPage).ToListAsync();
+            var users = _mapper.Map<List<UserViewModel>>(dataList);
+            var pages = pagination.GetPages(dataCount);
+            var result = new ResponseDto
+            {
+                data = users,
+                meta = new Meta
+                {
+                    page = pagination.Page,
+                    perpage = pagination.PerPage,
+                    pages = pages,
+                    total = dataCount
+                }
+            };
+            return result;
         }
-        public async Task<string> Create(UserDto dto)
+        public async Task<string> Create(CreateUserDto dto)
         {
             var EmailOrPhoneisExist = _db.Users.Any(x => !x.IsDelete &&
             (x.Email == dto.Email || x.PhoneNumber == dto.PhoneNumber));
@@ -71,7 +93,7 @@ namespace CMS.Infrastructure.Services.Users
             return user.Id;        
         
         }
-        public async Task<string> Update(UserDto dto)
+        public async Task<string> Update(UpdateUserDto dto)
         {
             var EmailOrPhoneisExist = _db.Users.Any(x => !x.IsDelete &&
             (x.Email == dto.Email || x.PhoneNumber == dto.PhoneNumber)
@@ -82,7 +104,7 @@ namespace CMS.Infrastructure.Services.Users
                 throw new DuplicatedEmailOrPhoneException();
             }
             var user = await _db.Users.FindAsync(dto.Id);
-            var updatedUser =_mapper.Map<UserDto,User>(dto,user);
+            var updatedUser =_mapper.Map<UpdateUserDto,User>(dto,user);
             user.UserName = dto.Email;
             if(dto.Image != null)
             {
@@ -94,11 +116,7 @@ namespace CMS.Infrastructure.Services.Users
         
         }
 
-        private string GeneratePassword()
-        {
-            return Guid.NewGuid().ToString().Substring(1, 8);
-        }
-
+    
 
         public async Task<string> Delete(string Id)
         {
@@ -112,6 +130,20 @@ namespace CMS.Infrastructure.Services.Users
             await _db.SaveChangesAsync();
             return user.Id;
 
+        }
+        public async Task<UpdateUserDto> Get(string Id)
+        {
+            var user =await _db.Users.SingleOrDefaultAsync(x => x.Id == Id && !x.IsDelete);
+            if(user == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            return _mapper.Map<UpdateUserDto>(user);
+
+        }
+        private string GeneratePassword()
+        {
+            return Guid.NewGuid().ToString().Substring(1, 8);
         }
 
 

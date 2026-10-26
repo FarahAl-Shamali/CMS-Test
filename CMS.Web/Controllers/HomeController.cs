@@ -8,6 +8,8 @@ namespace CMS.Web.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.UserType = "Administrator";
+            ViewBag.fullName = "Test User";
             return View();
         }
 
