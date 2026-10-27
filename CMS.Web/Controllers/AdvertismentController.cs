@@ -46,22 +46,22 @@ namespace CMS.Web.Controllers
             }
             return View(dto);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> Update(int id)
-        //{
-        //    var user = await _advertismentService.Get(id);
-        //    return View(user);
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Update(UpdateAdvertismentDto dto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _advertismentService.Update(dto);
-        //        return Ok(Results.EditSuccessResult());
-        //    }
-        //    return View(dto);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var user = await _advertismentService.Get(id);
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateAdvertismentDto dto)
+        {
+            if (ModelState.IsValid)
+            {
+                await _advertismentService.Update(dto);
+                return Ok(Results.EditSuccessResult());
+            }
+            return View(dto);
+        }
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
