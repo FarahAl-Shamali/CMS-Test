@@ -16,9 +16,9 @@ namespace CMS.Data.Models
 
         public string Message { get; set; }
         public NotificationAction Action { get; set; }
-        public string ActionId { get; set; }
+        public string? ActionId { get; set; }
         public User User { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public DateTime SentAt { get; set; }
     }
 }

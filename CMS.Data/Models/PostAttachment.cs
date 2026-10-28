@@ -12,6 +12,6 @@ namespace CMS.Data.Models
         public Post Post { get; set; }
         [Required]
 
-        public string AttachmenUrl { get; set; }
+        public string? AttachmenUrl { get; set; }
     }
 }

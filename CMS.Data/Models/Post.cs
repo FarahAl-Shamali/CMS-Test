@@ -18,7 +18,7 @@ namespace CMS.Data.Models
         public int TimeInMinute { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public string AuthorId { get; set; }
+        public string? AuthorId { get; set; }
         public User Author { get; set; }
         public ContentStatus Status { get; set; }
         public List<PostAttachment> Attachments { get; set; }
