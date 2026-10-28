@@ -12,6 +12,9 @@ namespace CMS.Infrastructure.Services.Advertisments
         Task<int> Delete(int Id);
         Task<ResponseDto> GetAll(Pagination pagination, Query query);
         Task<List<UserViewModel>> GetAdvertismentOwners();
+        Task<UpdateAdvertismentDto> Get(int Id);
+        Task<int> Update(UpdateAdvertismentDto dto);
+        
 
-    }
+        }
 }
