@@ -18,7 +18,7 @@ namespace CMS.Data.Models
         [Required]
 
         public string? OwnerName { get; set; } 
-        public int CateoryId { get; set; }
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
         public ContentStatus Status { get; set; }
 

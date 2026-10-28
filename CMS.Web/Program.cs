@@ -7,6 +7,7 @@ using CMS.Infrastructure.Services.Advertisments;
 using CMS.Infrastructure.Services.Categories;
 using CMS.Infrastructure.Services.Email;
 using CMS.Infrastructure.Services.Files;
+using CMS.Infrastructure.Services.Tracks;
 using CMS.Infrastructure.Services.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,7 @@ namespace CMS.Web
             builder.Services.AddTransient<IUserService,UserService>();
             builder.Services.AddTransient<ICategoryService,CategoryService>();
             builder.Services.AddTransient<IAdvertismentService, AdvertismentService>();
+            builder.Services.AddTransient<ITrackService, TrackService>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddRazorPages();
 

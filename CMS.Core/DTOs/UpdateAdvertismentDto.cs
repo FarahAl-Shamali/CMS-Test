@@ -28,6 +28,6 @@ namespace CMS.Core.DTOs
         public DateTime EndDate { get; set; }
         [Display(Name = "السعر ")]
         [Required(ErrorMessage = "هذا الحقل مطلوب")]
-        public float Price { get; set; }
+        public decimal Price { get; set; }
     }
 }
