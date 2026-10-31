@@ -66,7 +66,7 @@ var KTDatatableAutoColumnHideDemo = function () {
                     title: 'الملف ',
                     width: '300',
                     template: function (data) {
-                        return '<audio controls src = "/tracks/' + data.trackUrl + '"></audio>';
+                        return '<audio controls src = "/Tracks/' + data.trackUrl + '"></audio>';
                     }
                 },
                 {

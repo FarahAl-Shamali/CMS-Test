@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CMS.Core.Enums;
 
 namespace CMS.Infrastructure.Services.Tracks
 {
@@ -95,6 +96,19 @@ namespace CMS.Infrastructure.Services.Tracks
              _db.Tracks.Update(updatedTrack);
             await _db.SaveChangesAsync();
             return updatedTrack.Id;
+        }
+        public async Task<int> UpdateStatus(int Id, ContentStatus status)
+        {
+            var track = await _db.Tracks.SingleOrDefaultAsync(x => !x.IsDelete && x.Id == Id);
+            if (track == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            track.Status = status;
+            _db.Tracks.Update(track);
+            await _db.SaveChangesAsync();
+            return track.Id;
+
         }
     }
 }

@@ -27,6 +27,7 @@ namespace CMS.Core.Constants
         {
             return new { status = 1, msg = "s: تم حذف العنصر بنجاح", close = 1 };
         }
+       
 
 
     }

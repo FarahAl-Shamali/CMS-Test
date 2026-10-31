@@ -23,6 +23,9 @@ namespace CMS.Data.Models
         public ContentStatus Status { get; set; }
         public List<PostAttachment> Attachments { get; set; }
 
-
+        public Post()
+        {
+            Status = ContentStatus.Pending;
+        }
     }
 }
