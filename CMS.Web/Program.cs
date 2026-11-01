@@ -46,6 +46,7 @@ namespace CMS.Web
             builder.Services.AddTransient<IAdvertismentService, AdvertismentService>();
             builder.Services.AddTransient<ITrackService, TrackService>();
             builder.Services.AddTransient<IPostService, PostService>();
+            builder.Services.AddTransient<IDashBoardService, DashBoardService>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddRazorPages();
 
