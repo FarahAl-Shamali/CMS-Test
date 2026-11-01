@@ -1,8 +1,151 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div class="card card-custom">
+    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-title">
+            <h1 class="card-label">
+                احصائيات
+            </h1>
+        </div>
+    </div>
+<div class="card-body"> 
+<div class="row">
+    <div class="col-md-3">
+        <div class="alert alert-info">
+        <h3>عدد المستخدمين</h3>
+        </div>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="col-md-3">
+
+                <div class="alert alert-info ">
+                    <h3>عدد الأخبار</h3>
+
+    </div>
+    </div>
+
+    <div class="col-md-3">
+                <div class="alert alert-info">
+         <h3>عدد التسجيلات الصوتية</h3>
+
+    </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="alert alert-info">
+          <h3>عدد الاعلانات</h3>
+        </div>
+    </div>
 </div>
+<br />
+<hr />
+<div class="row">
+            <div class="col-md-6">
+                <h3>توزيع المستخدمين بالنسبة لنوع المستخدم</h3>
+                <canvas id="userTypeChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-md-6">
+                <h3>توزيع المحتوى بالنسبة لنوعه</h3>
+                <canvas id="contentTypeChart" width="400" height="400"></canvas>
+            </div>
+
+</div>
+<br />
+<hr />
+<div class="col-md-12">
+    <h3>توزيع المحتوى بالنسبة لاشهر السنة</h3>
+    <canvas id="contentByMonthChart" width="400" height="400"></canvas>
+
+</div>
+</div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const userTypeCanvas = document.getElementById('userTypeChart').getContext('2d');
+        const contentTypeCanvas = document.getElementById('contentTypeChart').getContext('2d');
+        const contentByMonthChart = document.getElementById('contentByMonthChart').getContext('2d');
+
+        var userTypeChartLabels = [];
+        var userTypeChartValues = [];
+        var userTypeChartColors = [];
+
+        var contentTypeChartLabels = [];
+        var contentTypeChartValues = [];
+        var contentTypeChartColors = [];
+
+        var contentByMonthTypeChartLabels = [];
+        var contentByMonthChartValues = [];
+        var contentByMonthChartColors = [];
+
+        $.ajax({
+        url: "/Home/GetUserTypeChartData",
+        success: function (result) {
+        $(result).each(function (index) {
+        userTypeChartLabels.push(result[index].key);
+        userTypeChartValues.push(result[index].value);
+        userTypeChartColors.push(result[index].color);
+        });
+        var userTypeChart = new Chart(userTypeCanvas, {
+        type: 'pie',
+        data: {
+        labels: userTypeChartLabels,
+        datasets: [{
+        label: '# of Users',
+        data: userTypeChartValues,
+        backgroundColor: userTypeChartColors
+        }]
+        },
+        options: {}
+        });
+        }
+        });
+
+        $.ajax({
+        url: "/Home/GetContentTypeChartData",
+        success: function (result) {
+        $(result).each(function (index) {
+        contentTypeChartLabels.push(result[index].key);
+        contentTypeChartValues.push(result[index].value);
+        contentTypeChartColors.push(result[index].color);
+        });
+        var contentTypeChart = new Chart(contentTypeCanvas, {
+        type: 'pie',
+        data: {
+        labels: contentTypeChartLabels,
+        datasets: [{
+        label: '# of Items',
+        data: contentTypeChartValues,
+        backgroundColor: contentTypeChartColors
+        }]
+        },
+        options: {}
+        });
+        }
+        });
+        $.ajax({
+        url: "/Home/GetContentByMonthChartData",
+        success: function (result) {
+        $(result).each(function (index) {
+        contentByMonthTypeChartLabels.push(result[index].key);
+        contentByMonthChartValues.push(result[index].value);
+        contentByMonthChartColors.push(result[index].color);
+        });
+        var contentTypeChart = new Chart(contentByMonthChart, {
+        type: 'bar',
+        data: {
+        labels: contentByMonthTypeChartLabels,
+        datasets: [{
+        label: '# of Items',
+        data: contentByMonthChartValues,
+        backgroundColor: contentByMonthChartColors
+        }]
+        },
+        options: {}
+        });
+        }
+        });
+    </script>
+}

@@ -1,0 +1,36 @@
+﻿using CMS.Core.Enums;
+
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace CMS.Core.DTOs
+{
+    public class CreateTrackDto
+    {
+       
+        [Required(ErrorMessage ="هذا الحقل مطلوب")]
+        [Display(Name = "العنوان")]
+        public string? Title { get; set; }
+        [Display(Name = "الوقت")]
+
+        public int TimeInMinute { get; set; }
+        [Required(ErrorMessage = "هذا الحقل مطلوب")]
+        [Display(Name = "ملف الصوت")]
+
+        public IFormFile Track { get; set; }
+        [Required(ErrorMessage = "هذا الحقل مطلوب")]
+        [Display(Name = "صاحب الملف")]
+
+        public string? OwnerName { get; set; }
+        [Display(Name = "التصنيف")]
+        [Required(ErrorMessage = "هذا الحقل مطلوب")]
+
+        public int CategoryId { get; set; }
+
+
+
+    }
+}

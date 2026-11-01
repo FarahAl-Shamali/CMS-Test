@@ -20,6 +20,13 @@ namespace CMS.Infrastructure.Services.Categories
             _db = db;
             _mapper = mapper;
         }
+        public async Task<List<CategoryViewModel>> GetCategoryList()
+        {
+            var categories = await _db.Categories.Where(x => !x.IsDelete).ToListAsync();
+            return _mapper.Map<List<CategoryViewModel>>(categories);
+
+        }
+
         public async Task<ResponseDto> GetAll(Pagination pagination, Query query)
         {
             var queryString = _db.Categories.Where(x => !x.IsDelete &&

@@ -157,7 +157,6 @@ namespace CMS.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -179,7 +178,6 @@ namespace CMS.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ActionId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
@@ -194,7 +192,6 @@ namespace CMS.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -213,7 +210,6 @@ namespace CMS.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Body")
@@ -290,9 +286,6 @@ namespace CMS.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CateoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -307,7 +300,6 @@ namespace CMS.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PublishedById")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
@@ -580,9 +572,7 @@ namespace CMS.Data.Migrations
                 {
                     b.HasOne("CMS.Data.Models.User", "User")
                         .WithMany("Emails")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -591,9 +581,7 @@ namespace CMS.Data.Migrations
                 {
                     b.HasOne("CMS.Data.Models.User", "User")
                         .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -602,9 +590,7 @@ namespace CMS.Data.Migrations
                 {
                     b.HasOne("CMS.Data.Models.User", "Author")
                         .WithMany("Posts")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("CMS.Data.Models.Category", "Category")
                         .WithMany("Posts")
@@ -638,9 +624,7 @@ namespace CMS.Data.Migrations
 
                     b.HasOne("CMS.Data.Models.User", "PublishedBy")
                         .WithMany("Tracks")
-                        .HasForeignKey("PublishedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublishedById");
 
                     b.Navigation("Category");
 

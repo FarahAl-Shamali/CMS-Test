@@ -91,6 +91,38 @@ namespace CMS.Infrastructure.Services
 
             return advertisement.Id;
         }
+        public async Task<int> Update(UpdateAdvertismentDto dto)
+        {
+
+            if (dto.StartDate >= dto.EndDate)
+            {
+                throw new InvalidDateException();
+            }
+            var advertisement = await _db.Advertisments.SingleOrDefaultAsync(x => x.Id == dto.Id && !x.IsDelete);
+            if(advertisement.Id == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            var updatesAdvertisement = _mapper.Map(dto,advertisement);
+            
+            if (dto.Image != null)
+            {
+                updatesAdvertisement.ImageUrl = await _fileservice.SaveFile(dto.Image, "Images");
+            }
+
+             _db.Advertisments.Update(updatesAdvertisement);
+            await _db.SaveChangesAsync();
+            return advertisement.Id;
+        }
+        public async Task<UpdateAdvertismentDto> Get(int Id)
+        {
+            var advertisment = await _db.Advertisments.SingleOrDefaultAsync(x=>!x.IsDelete && x.Id == Id);
+            if(advertisment == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            return _mapper.Map<UpdateAdvertismentDto>(advertisment);
+        }
         public async Task<int> Delete(int Id)
         {
             var advertisment = await _db.Advertisments.SingleOrDefaultAsync(x=>!x.IsDelete && x.Id == Id);

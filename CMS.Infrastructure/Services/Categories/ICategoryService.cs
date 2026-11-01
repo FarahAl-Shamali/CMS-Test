@@ -16,7 +16,7 @@ namespace CMS.Infrastructure.Services.Categories
 
         Task<UpdateCategoryDto> Get(int Id);
 
-        //Task<List<CategoryViewModel>> GetCategoryList();
+        Task<List<CategoryViewModel>> GetCategoryList();
 
         Task<int> Delete(int Id);
     }
