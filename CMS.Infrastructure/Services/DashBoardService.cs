@@ -32,25 +32,25 @@ namespace CMS.Infrastructure.Services
             { 
                 Key = "Administrator",
                 Value =await _db.Users.CountAsync(x=> !x.IsDelete && x.UserType == UserType.Administrator),
-                Color= "#6B552F"
+                Color= "#b1cee8"
             });
             data.Add(new PieChartViewModel() 
             { 
                 Key = "ArticleAuthor",
                 Value = await _db.Users.CountAsync(x => !x.IsDelete && x.UserType == UserType.ArticleAuthor),
-                Color = "#456B2F"
+                Color = "#8ab5dc"
             });
             data.Add(new PieChartViewModel() 
             { 
                 Key = "TrackAdministrator",
                 Value = await _db.Users.CountAsync(x => !x.IsDelete && x.UserType == UserType.TrackAdministrator),
-                Color = "#636B2F"
+                Color = "#5091cb"
             });
             data.Add(new PieChartViewModel() 
             { 
                 Key = "AdvertisementOwner",
                 Value = await _db.Users.CountAsync(x => !x.IsDelete && x.UserType == UserType.AdvertisementOwner),
-                Color = "#BAC095"
+                Color = "#244f76"
             });
            
             return data;
@@ -62,13 +62,13 @@ namespace CMS.Infrastructure.Services
             { 
                 Key = "Track",
                 Value =await _db.Tracks.CountAsync(x=> !x.IsDelete),
-                Color= "#BAC095"
+                Color= "#8ab5dc"
             });
             data.Add(new PieChartViewModel() 
             { 
                 Key = "Post",
                 Value = await _db.Posts.CountAsync(x => !x.IsDelete),
-                Color = "#636B2F"
+                Color = "#244f76"
             });
            
            
