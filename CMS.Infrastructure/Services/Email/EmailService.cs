@@ -47,7 +47,7 @@ namespace CMS.Infrastructure.Services.Email
                         DeliveryMethod = SmtpDeliveryMethod.Network,
                         UseDefaultCredentials = false,
                         Credentials = new NetworkCredential(senderEmail, password),
-                        Timeout = 3000
+                        Timeout = 30000
                     };
 
                     await emailClient.SendMailAsync(message);

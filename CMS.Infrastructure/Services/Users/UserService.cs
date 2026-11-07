@@ -35,6 +35,15 @@ namespace CMS.Infrastructure.Services.Users
             _fileService = fileService;
             _emailService = emailService;
         }
+        public UserViewModel GetUserByUserName(string username)
+        {
+            var user =  _db.Users.SingleOrDefault(x => x.UserName == username && !x.IsDelete);
+            if (user == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            return _mapper.Map<UserViewModel>(user);
+        }
         public async Task<List<UserViewModel>> GetAuthorList()
         {
             var users = await _db.Users.Where(x => !x.IsDelete && x.UserType == Core.Enums.UserType.ArticleAuthor).ToListAsync();
@@ -83,19 +92,20 @@ namespace CMS.Infrastructure.Services.Users
             {
                user.ImageUrl= await _fileService.SaveFile(dto.Image, FolderNames.ImagesFolder);
             }
-           
+
             //CreateAsync returns a Task<IdentityResult>. When you await it, you get the IdentityResult.
             //What IdentityResult contains
             //Succeeded (bool): true if the user was created, false if not.
             //Errors(a list of IdentityError): each has a Code(like DuplicateEmail)
             //and a Description(a readable message like “Email ‘a@b.com’ is already taken.”)
-            var result = await _usermanager.CreateAsync(user);
             var password = GeneratePassword();
+            var result = await _usermanager.CreateAsync(user,password);
+            
             if (!result.Succeeded)
             {
                 throw new OperationFailedException();
             }
-            _emailService.Send(user.Email, "new Account !", $"Username is {user.Email} and Password is {password}");
+            await _emailService.Send(user.Email, "new Account !", $"Username is {user.Email} and Password is {password}");
             return user.Id;        
         
         }

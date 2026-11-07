@@ -10,16 +10,16 @@ using Results = CMS.Core.Constants.Results;
 
 namespace CMS.Web.Controllers
 {
-    public class PostController : Controller
+    public class PostController : BaseController
     {
         private readonly IPostService _postService;
         private readonly ICategoryService _categoryService;
-        private readonly IUserService _userService;
-        public PostController(IPostService postService, ICategoryService categoryService, IUserService userService)
+
+        public PostController(IPostService postService, ICategoryService categoryService, IUserService userService) : base(userService)
         {
             _postService = postService;
             _categoryService = categoryService;
-            _userService = userService;
+        
         }
         public async Task<IActionResult> GetLog(int Id)
         {
