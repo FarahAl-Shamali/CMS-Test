@@ -1,19 +1,26 @@
 
 using CMS.Infrastructure.Services;
+using CMS.Infrastructure.Services.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CMS.Web.Controllers
 {
-    public class HomeController : Controller
+  
+    public class HomeController : BaseController
     {
         private readonly IDashBoardService _dashboardService;
-        public HomeController(IDashBoardService dashboardService)
+        public HomeController(IDashBoardService dashboardService, IUserService userService) : base(userService)
         {
             _dashboardService = dashboardService;
         }
         public async Task<IActionResult> Index()
         {
+            if(userType != "Administrator")
+            {
+                return Redirect("/category");
+            }
             var data = await _dashboardService.GetData();
             return View(data);
         }

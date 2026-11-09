@@ -46,7 +46,7 @@ namespace CMS.Infrastructure.AutoMapper
                 .ForMember(x=>x.Attachments,x=>x.Ignore());
             CreateMap<UpdatePostDto, Post>()
                 .ForMember(x => x.Attachments, x => x.Ignore());
-            CreateMap<Post, UpdatePostDto>();
+            CreateMap<Post, UpdatePostDto>().ForMember(x => x.Attachments, x => x.Ignore()).ForMember(x => x.PostAttachments, x => x.Ignore());
 
 
 

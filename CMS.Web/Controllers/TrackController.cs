@@ -2,17 +2,18 @@
 using CMS.Infrastructure.Services.Advertisments;
 using CMS.Infrastructure.Services.Categories;
 using CMS.Infrastructure.Services.Tracks;
+using CMS.Infrastructure.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Results = CMS.Core.Constants.Results;
 
 namespace CMS.Web.Controllers
 {
-    public class TrackController : Controller
+    public class TrackController : BaseController
     {
         private readonly ITrackService _trackService;
         private readonly ICategoryService _categoryService;
-        public TrackController(ITrackService trackService, ICategoryService categoryService)
+        public TrackController(ITrackService trackService, ICategoryService categoryService, IUserService userService) : base(userService)
         {
             _trackService = trackService;
             _categoryService = categoryService;

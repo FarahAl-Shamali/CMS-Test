@@ -1,13 +1,14 @@
 ﻿using CMS.Core.DTOs;
 using CMS.Infrastructure.Services.Categories;
+using CMS.Infrastructure.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Results = CMS.Core.Constants.Results;
 namespace CMS.Web.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
        private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IUserService userService) : base(userService)
         {
             _categoryService = categoryService;
         }

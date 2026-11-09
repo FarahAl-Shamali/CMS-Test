@@ -10,16 +10,16 @@ using Results = CMS.Core.Constants.Results;
 
 namespace CMS.Web.Controllers
 {
-    public class PostController : Controller
+    public class PostController : BaseController
     {
         private readonly IPostService _postService;
         private readonly ICategoryService _categoryService;
-        private readonly IUserService _userService;
-        public PostController(IPostService postService, ICategoryService categoryService, IUserService userService)
+
+        public PostController(IPostService postService, ICategoryService categoryService, IUserService userService) : base(userService)
         {
             _postService = postService;
             _categoryService = categoryService;
-            _userService = userService;
+        
         }
         public async Task<IActionResult> GetLog(int Id)
         {
@@ -58,34 +58,40 @@ namespace CMS.Web.Controllers
             ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
             return View(dto);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> Update(int id)
-        //{
-        //    var track = await _postService.Get(id);
-        //    ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
-        //    ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var track = await _postService.Get(id);
+            ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
+            ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
 
-        //    return View(track);
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Update(UpdatePostDto dto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _postService.Update(dto);
-        //        return Ok(Results.EditSuccessResult());
-        //    }
-        //    ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
-        //    ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
+            return View(track);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdatePostDto dto)
+        {
+            if (ModelState.IsValid)
+            {
+                await _postService.Update(dto);
+                return Ok(Results.EditSuccessResult());
+            }
+            ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
+            ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
 
-        //    return View(dto);
-        //}
-        //[HttpGet]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    await _postService.Delete(id);
-        //    return Ok(Results.DeleteSuccessResult());
-        //}
+            return View(dto);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _postService.Delete(id);
+            return Ok(Results.DeleteSuccessResult());
+        }
+        [HttpGet]
+        public async Task<IActionResult> RemoveAttachment(int id)
+        {
+            await _postService.RemoveAttachment(id);
+            return Ok(Results.DeleteSuccessResult());
+        }
         [HttpGet]
         public async Task<IActionResult> UpdateStatus(int id,ContentStatus status)
         {

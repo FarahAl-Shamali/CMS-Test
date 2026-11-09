@@ -7,11 +7,15 @@ using CMS.Infrastructure.Services.Advertisments;
 using CMS.Infrastructure.Services.Categories;
 using CMS.Infrastructure.Services.Email;
 using CMS.Infrastructure.Services.Files;
+using CMS.Infrastructure.Services.Notifications;
 using CMS.Infrastructure.Services.Posts;
 using CMS.Infrastructure.Services.Tracks;
 using CMS.Infrastructure.Services.Users;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CMS.Web
 {
@@ -25,11 +29,12 @@ namespace CMS.Web
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<CMSDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<User, IdentityRole>(config =>
             {
-                config.SignIn.RequireConfirmedAccount = true;
+                config.SignIn.RequireConfirmedAccount = false;
                 config.User.RequireUniqueEmail = false;
                 config.Password.RequireDigit = false;
                 config.Password.RequiredLength = 6;
@@ -37,7 +42,7 @@ namespace CMS.Web
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
             })
-                .AddEntityFrameworkStores<CMSDbContext>();
+                .AddEntityFrameworkStores<CMSDbContext>().AddDefaultUI().AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
             builder.Services.AddTransient<IEmailService,EmailService>();
             builder.Services.AddTransient<IFileService,FileService>();
@@ -46,6 +51,7 @@ namespace CMS.Web
             builder.Services.AddTransient<IAdvertismentService, AdvertismentService>();
             builder.Services.AddTransient<ITrackService, TrackService>();
             builder.Services.AddTransient<IPostService, PostService>();
+            builder.Services.AddTransient<INotificationService, NotificationService>();
             builder.Services.AddTransient<IDashBoardService, DashBoardService>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddRazorPages();
@@ -59,7 +65,6 @@ namespace CMS.Web
             
             var app = builder.Build();  
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -67,15 +72,18 @@ namespace CMS.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
-            app.UseRouting();
-
+            app.UseRouting();   
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseExceptionHandler(opts=> opts.UseMiddleware<ExceptionHandler>());
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(Path.Combine(app.Environment.WebRootPath, "cmsweb-4ecf6-firebase-adminsdk-fbsvc-5c1454f1ea.json"))
+            });
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
@@ -83,7 +91,7 @@ namespace CMS.Web
                 .WithStaticAssets();
             app.MapRazorPages()
                .WithStaticAssets();
-
+            app.SeedDb();
             app.Run();
         }
     }
