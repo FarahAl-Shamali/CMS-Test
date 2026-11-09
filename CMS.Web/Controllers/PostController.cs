@@ -58,34 +58,40 @@ namespace CMS.Web.Controllers
             ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
             return View(dto);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> Update(int id)
-        //{
-        //    var track = await _postService.Get(id);
-        //    ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
-        //    ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var track = await _postService.Get(id);
+            ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
+            ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
 
-        //    return View(track);
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Update(UpdatePostDto dto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _postService.Update(dto);
-        //        return Ok(Results.EditSuccessResult());
-        //    }
-        //    ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
-        //    ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
+            return View(track);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdatePostDto dto)
+        {
+            if (ModelState.IsValid)
+            {
+                await _postService.Update(dto);
+                return Ok(Results.EditSuccessResult());
+            }
+            ViewData["Categories"] = new SelectList(await _categoryService.GetCategoryList(), "Id", "Name");
+            ViewData["Authors"] = new SelectList(await _userService.GetAuthorList(), "Id", "FullName");
 
-        //    return View(dto);
-        //}
-        //[HttpGet]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    await _postService.Delete(id);
-        //    return Ok(Results.DeleteSuccessResult());
-        //}
+            return View(dto);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _postService.Delete(id);
+            return Ok(Results.DeleteSuccessResult());
+        }
+        [HttpGet]
+        public async Task<IActionResult> RemoveAttachment(int id)
+        {
+            await _postService.RemoveAttachment(id);
+            return Ok(Results.DeleteSuccessResult());
+        }
         [HttpGet]
         public async Task<IActionResult> UpdateStatus(int id,ContentStatus status)
         {

@@ -1,5 +1,6 @@
 ﻿using CMS.Core.Enums;
 using CMS.Infrastructure.Services.Users;
+using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,6 +12,7 @@ namespace CMS.Web.Controllers
     {
         protected readonly IUserService _userService;
         protected string userType;
+        protected string userId;
         public BaseController(IUserService userService)
         {
             _userService = userService;
@@ -24,6 +26,7 @@ namespace CMS.Web.Controllers
                 var user = _userService.GetUserByUserName(userName);
                 ViewBag.FullName = user.FullName;
                 userType = user.UserType;
+                userId = user.Id;
                 ViewBag.image = user.ImageUrl;
                 ViewBag.UserType = user.UserType.ToString();
             }

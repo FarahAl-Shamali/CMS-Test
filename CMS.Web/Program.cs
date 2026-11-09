@@ -7,9 +7,12 @@ using CMS.Infrastructure.Services.Advertisments;
 using CMS.Infrastructure.Services.Categories;
 using CMS.Infrastructure.Services.Email;
 using CMS.Infrastructure.Services.Files;
+using CMS.Infrastructure.Services.Notifications;
 using CMS.Infrastructure.Services.Posts;
 using CMS.Infrastructure.Services.Tracks;
 using CMS.Infrastructure.Services.Users;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,6 +51,7 @@ namespace CMS.Web
             builder.Services.AddTransient<IAdvertismentService, AdvertismentService>();
             builder.Services.AddTransient<ITrackService, TrackService>();
             builder.Services.AddTransient<IPostService, PostService>();
+            builder.Services.AddTransient<INotificationService, NotificationService>();
             builder.Services.AddTransient<IDashBoardService, DashBoardService>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddRazorPages();
@@ -72,10 +76,14 @@ namespace CMS.Web
             }
 
             app.UseHttpsRedirection();
-            app.UseRouting();
+            app.UseRouting();   
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseExceptionHandler(opts=> opts.UseMiddleware<ExceptionHandler>());
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(Path.Combine(app.Environment.WebRootPath, "cmsweb-4ecf6-firebase-adminsdk-fbsvc-5c1454f1ea.json"))
+            });
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",

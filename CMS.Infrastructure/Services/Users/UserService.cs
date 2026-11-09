@@ -6,6 +6,7 @@ using CMS.Core.Exceptions;
 using CMS.Core.ViewModels;
 using CMS.Data;
 using CMS.Data.Models;
+using CMS.Infrastructure.Helpers;
 using CMS.Infrastructure.Services.Email;
 using CMS.Infrastructure.Services.Files;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -43,6 +44,18 @@ namespace CMS.Infrastructure.Services.Users
                 throw new EntityNotFoundException();
             }
             return _mapper.Map<UserViewModel>(user);
+        }
+        public async Task<string> SetFCMToUser(string userId, string fcmToken)
+        {
+            var user = await _db.Users.SingleOrDefaultAsync(x => x.Id == userId && !x.IsDelete);
+            if (user == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            user.FCMToken = fcmToken;
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            return user.Id;
         }
         public async Task<List<UserViewModel>> GetAuthorList()
         {
@@ -156,6 +169,25 @@ namespace CMS.Infrastructure.Services.Users
             }
             return _mapper.Map<UpdateUserDto>(user);
 
+        }
+        public async Task<byte[]> ExportToExcel()
+        {
+            var users =await _db.Users.Where(x => !x.IsDelete).ToListAsync();
+
+            return ExcelHelpers.ToExcel(new Dictionary<string, ExcelColumn>
+            {
+                {"FullName", new ExcelColumn("FullName", 0)},
+                {"Email", new ExcelColumn("Email", 1)},
+                {"Phone", new ExcelColumn("Phone", 2)}
+            }, new List<ExcelRow>(users.Select(e => new ExcelRow
+            {
+                Values = new Dictionary<string, string>
+                {
+                    {"FullName", e.FullName},
+                    {"Email", e.Email},
+                    {"Phone", e.PhoneNumber}
+                }
+            })));
         }
         private string GeneratePassword()
         {

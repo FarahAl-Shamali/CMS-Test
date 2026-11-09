@@ -20,6 +20,7 @@ namespace CMS.Data.Models
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
         public UserType UserType { get; set; }
+        public string? FCMToken { get; set; }
         public List<Post> Posts{ get; set; }
         public List<Track> Tracks{ get; set; }
         public List<Advertisment> Advertisments{ get; set; }

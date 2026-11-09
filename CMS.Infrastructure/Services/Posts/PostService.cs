@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using CMS.Core.Enums;
 using CMS.Infrastructure.Services.Email;
+using CMS.Infrastructure.Services.Notifications;
 
 namespace CMS.Infrastructure.Services.Posts
 {
@@ -22,13 +23,15 @@ namespace CMS.Infrastructure.Services.Posts
         private readonly IMapper _mapper;
         private readonly IEmailService _emailservice;
         private readonly IFileService _fileservice;
+        private readonly INotificationService _notificationervice;
 
-        public PostService(CMSDbContext db, IMapper mapper, IFileService fileservice, IEmailService emailservice)
+        public PostService(CMSDbContext db, IMapper mapper, IFileService fileservice, IEmailService emailservice, INotificationService notificationervice)
         {
             _db = db;
             _mapper = mapper;
             _fileservice = fileservice;
             _emailservice = emailservice;
+            _notificationervice = notificationervice;
         }
         public async Task<ResponseDto> GetAll(Pagination pagination, Query query)
         {
@@ -69,14 +72,31 @@ namespace CMS.Infrastructure.Services.Posts
             await _db.SaveChangesAsync();
             return post.Id;
         }
-        public async Task<UpdatePostDto> Get(int Id)
+        public async Task<int> RemoveAttachment(int Id)
         {
-            var post = await _db.Posts.SingleOrDefaultAsync(x => !x.IsDelete && x.Id == Id);
+            var post = await _db.PostAttachments.SingleOrDefaultAsync(x=> x.Id == Id);
             if (post == null)
             {
                 throw new EntityNotFoundException();
             }
-            return _mapper.Map<UpdatePostDto>(post);
+       
+            _db.PostAttachments.Remove(post);
+            await _db.SaveChangesAsync();
+            return post.Id;
+        }
+        public async Task<UpdatePostDto> Get(int Id)
+        {
+            var post = await _db.Posts.Include(x=>x.Attachments).SingleOrDefaultAsync(x => !x.IsDelete && x.Id == Id);
+            if (post == null)
+            {
+                throw new EntityNotFoundException();
+            }
+            var dto = _mapper.Map<UpdatePostDto>(post);
+            if (post.Attachments!=null)
+            {
+                dto.PostAttachments = _mapper.Map<List<PostAttachmentViewModel>>(post.Attachments);
+            }
+            return dto;
         }
         public async Task<int> Create(CreatePostDto dto)
         {
@@ -122,11 +142,51 @@ namespace CMS.Infrastructure.Services.Posts
             post.Status = status;
             _db.Posts.Update(post);
             await _db.SaveChangesAsync();
-             
+            if (post.Author.FCMToken != null) {
+                await _notificationervice.SendByFCM(post.Author.FCMToken, new NotificationDto()
+                {
+                    Title = "Update Post",
+                    Body = "By Farah",
+                    Action = NotificationAction.General,
+                    ActionId = ""
+
+                });
+            }
+          
 
             await _emailservice.Send(post.Author.Email, "UPDATE POST STATUS !", $"YOUR POST NOW IS {status.ToString()}");
             return post.Id;
 
         }
+        
+        public async Task<int> Update(UpdatePostDto dto)
+        {
+            var post = await _db.Posts.SingleOrDefaultAsync(x => x.Id == dto.Id && !x.IsDelete);
+            if (post == null)
+            {
+                throw new EntityNotFoundException();
+            }
+
+            var updatedPost = _mapper.Map(dto, post);
+
+
+            _db.Posts.Update(updatedPost);
+            await _db.SaveChangesAsync();
+
+            if (dto.Attachments != null)
+            {
+                foreach (var a in dto.Attachments)
+                {
+                    var postAttachment = new PostAttachment();
+                    postAttachment.AttachmenUrl = await _fileservice.SaveFile(a, "Images");
+                    postAttachment.PostId = post.Id;
+                    await _db.PostAttachments.AddAsync(postAttachment);
+                    await _db.SaveChangesAsync();
+                }
+            }
+
+            return post.Id;
+        }
+
     }
 }

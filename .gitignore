@@ -427,3 +427,6 @@ FodyWeavers.xsd
 # Official VS Code C# Dev Kit Extension exclusion
 #*.lscache
 /CMS.Web/secrets.json
+
+# Firebase / GCP Service Account Keys
+CMS.Web/wwwroot/cmsweb-4ecf6-firebase-adminsdk-fbsvc-5c1454f1ea.json

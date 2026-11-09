@@ -22,6 +22,16 @@ namespace CMS.Web.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> AddFCM(string fcm)
+        {
+            await _userService.SetFCMToUser(userId, fcm);
+            return Ok("Updated FCM User");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            return File(await _userService.ExportToExcel(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
+        }
         public async Task<JsonResult> GetUserData(Pagination pagination, Query query)
         {
           var result =await _userService.GetAll(pagination, query);

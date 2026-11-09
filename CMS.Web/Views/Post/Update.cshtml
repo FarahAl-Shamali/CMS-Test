@@ -36,7 +36,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.categories">
+                <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.Categories">
                 </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
@@ -44,7 +44,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class="form-control" asp-items="@ViewBag.authores">
+                <select asp-for="AuthorId" class="form-control" asp-items="@ViewBag.Authors">
                 </select>
                 <span asp-validation-for="AuthorId" class="text-danger"></span>
             </div>
@@ -76,18 +76,18 @@
         <th>Name</th>
         <th>Action</th>
     </tr>
-    @* @foreach(var x in Model.PostAttachments)
+    @foreach(var x in Model.PostAttachments) //here
      {
          <tr>
              <th>
-                 @x.AttachmentUrl
+                 @x.AttachmenUrl
              </th>
            <th>
-               <a target="_blank" href="~/Images/@x.AttachmentUrl" class="btn btn-info">Go to File</a>
+               <a target="_blank" href="~/Images/@x.AttachmenUrl" class="btn btn-info">Go to File</a>
                <a href="~/post/RemoveAttachment/@x.Id" class="btn btn-danger">Delete</a>
            </th>
-         </tr> *@
-     @* } *@
+         </tr> 
+      }
 
 </table>
 
