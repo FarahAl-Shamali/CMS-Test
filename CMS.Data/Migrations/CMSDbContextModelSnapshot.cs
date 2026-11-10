@@ -47,7 +47,6 @@ namespace CMS.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("OwnerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Price")
@@ -564,9 +563,7 @@ namespace CMS.Data.Migrations
                 {
                     b.HasOne("CMS.Data.Models.User", "Owner")
                         .WithMany("Advertisments")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
 
                     b.Navigation("Owner");
                 });

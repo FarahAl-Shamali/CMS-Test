@@ -22,27 +22,33 @@ namespace CMS.Web.Controllers
         {
             return View();
         }
+        /////////////////////////////////////***** HERE *******///////////////////////////////////////////
         public async Task<IActionResult> AddFCM(string fcm)
         {
             await _userService.SetFCMToUser(userId, fcm);
             return Ok("Updated FCM User");
         }
+        ////////////////////////////////////////////////////////////////////////////////
+
         [HttpGet]
         public async Task<IActionResult> ExportToExcel()
         {
             return File(await _userService.ExportToExcel(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
         }
+
         public async Task<JsonResult> GetUserData(Pagination pagination, Query query)
         {
           var result =await _userService.GetAll(pagination, query);
             return Json(result);
- 
         }
+
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Create([FromForm]CreateUserDto dto)
         {
@@ -53,12 +59,16 @@ namespace CMS.Web.Controllers
             }
             return View(dto);
         }
+
+
         [HttpGet]
         public async Task<IActionResult> Update(string id)
         {
             var user = await _userService.Get(id);
             return View(user);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Update([FromForm] UpdateUserDto dto)
         {
@@ -69,13 +79,14 @@ namespace CMS.Web.Controllers
             }
             return View(dto);
         }
+
+
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             await _userService.Delete(id);
             return Ok(Results.DeleteSuccessResult());
-
-         
+ 
         }
         //[HttpGet]
         //public IActionResult DeExportToExcel()

@@ -38,7 +38,7 @@ var KTDatatableAutoColumnHideDemo = function () {
             },
             // columns definition
             columns: [
-            {
+                {
                     field: 'title',
                     title: 'العنوان ',
                     width: '150'
@@ -57,7 +57,7 @@ var KTDatatableAutoColumnHideDemo = function () {
                     field: 'category.name',
                     title: 'التصنيف ',
                     width: '100'
-                },{
+                }, {
                     field: 'status',
                     title: 'الحالة ',
                     width: '100'
@@ -67,17 +67,17 @@ var KTDatatableAutoColumnHideDemo = function () {
                     title: 'تاريخ الاضافة ',
                     width: '100'
                 },
-            {
-                field: 'Actions',
-                title: 'العمليات',
-                sortable: false,
-                width: 200,
-                overflow: 'visible',
-                autoHide: false,
-                template: function (data) {
-                    var buttons = '';
-                    
-                    buttons = buttons + '\<a  href ="/Post/Update/' + data.id + '" class="PopUp btn btn-sm btn-clean btn-icon mr-2" title="تعديل  بيانات ' + data.title + ' ">\
+                {
+                    field: 'Actions',
+                    title: 'العمليات',
+                    sortable: false,
+                    width: 200,
+                    overflow: 'visible',
+                    autoHide: false,
+                    template: function (data) {
+                        var buttons = '';
+
+                        buttons = buttons + '\<a  href ="/Post/Update/' + data.id + '" class="PopUp btn btn-sm btn-clean btn-icon mr-2" title="تعديل  بيانات ' + data.title + ' ">\
                             <span class="svg-icon svg-icon-warning svg-icon-md">\
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -111,13 +111,13 @@ var KTDatatableAutoColumnHideDemo = function () {
         <path d="M18,7 C19.1045695,7 20,6.1045695 20,5 C20,3.8954305 19.1045695,3 18,3 C16.8954305,3 16,3.8954305 16,5 C16,6.1045695 16.8954305,7 18,7 Z M18,9 C15.790861,9 14,7.209139 14,5 C14,2.790861 15.790861,1 18,1 C20.209139,1 22,2.790861 22,5 C22,7.209139 20.209139,9 18,9 Z" fill="#000000" fill-rule="nonzero"/>\
     </g>\
 </svg ></span > </a> ';
-                    
-                      
 
 
-                    if (data.status == 'Pending') {
-                        buttons = buttons +
-                            '<a href="/Post/UpdateStatus/' + data.id + '?status=2" tname="#kt_datatable" class="Confirm btn btn-sm btn-clean btn-icon" title="موافقة" >\
+
+
+                        if (data.status == 'Pending') {
+                            buttons = buttons +
+                                '<a href="/Post/UpdateStatus/' + data.id + '?status=2" tname="#kt_datatable" class="Confirm btn btn-sm btn-clean btn-icon" title="موافقة" >\
                        <span class="svg-icon svg-icon-success svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Code/Done-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                             <g stroke="none" stroke - width="1" fill = "none" fill - rule="evenodd" >\
               <rect x="0" y="0" width="24" height="24" />\
@@ -134,9 +134,9 @@ var KTDatatableAutoColumnHideDemo = function () {
         <path d="M12.0355339,10.6213203 L14.863961,7.79289322 C15.2544853,7.40236893 15.8876503,7.40236893 16.2781746,7.79289322 C16.6686989,8.18341751 16.6686989,8.81658249 16.2781746,9.20710678 L13.4497475,12.0355339 L16.2781746,14.863961 C16.6686989,15.2544853 16.6686989,15.8876503 16.2781746,16.2781746 C15.8876503,16.6686989 15.2544853,16.6686989 14.863961,16.2781746 L12.0355339,13.4497475 L9.20710678,16.2781746 C8.81658249,16.6686989 8.18341751,16.6686989 7.79289322,16.2781746 C7.40236893,15.8876503 7.40236893,15.2544853 7.79289322,14.863961 L10.6213203,12.0355339 L7.79289322,9.20710678 C7.40236893,8.81658249 7.40236893,8.18341751 7.79289322,7.79289322 C8.18341751,7.40236893 8.81658249,7.40236893 9.20710678,7.79289322 L12.0355339,10.6213203 Z" fill="#000000" />\
     </g>\
 </svg >\</span ></a >';
-                    } else if (data.status == 'Approved') {
-                        buttons = buttons +
-'<a href="/Post/UpdateStatus/' + data.id + '?status=3" tname="#kt_datatable" class="Confirm btn btn-sm btn-clean btn-icon" title="رفض" >\
+                        } else if (data.status == 'Approved') {
+                            buttons = buttons +
+                                '<a href="/Post/UpdateStatus/' + data.id + '?status=3" tname="#kt_datatable" class="Confirm btn btn-sm btn-clean btn-icon" title="رفض" >\
                       <span class="svg-icon svg-icon-danger svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Code/Error-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                             <g stroke="none" stroke - width="1" fill = "none" fill - rule="evenodd" >\
         <rect x="0" y="0" width="24" height="24" />\
@@ -144,9 +144,9 @@ var KTDatatableAutoColumnHideDemo = function () {
         <path d="M12.0355339,10.6213203 L14.863961,7.79289322 C15.2544853,7.40236893 15.8876503,7.40236893 16.2781746,7.79289322 C16.6686989,8.18341751 16.6686989,8.81658249 16.2781746,9.20710678 L13.4497475,12.0355339 L16.2781746,14.863961 C16.6686989,15.2544853 16.6686989,15.8876503 16.2781746,16.2781746 C15.8876503,16.6686989 15.2544853,16.6686989 14.863961,16.2781746 L12.0355339,13.4497475 L9.20710678,16.2781746 C8.81658249,16.6686989 8.18341751,16.6686989 7.79289322,16.2781746 C7.40236893,15.8876503 7.40236893,15.2544853 7.79289322,14.863961 L10.6213203,12.0355339 L7.79289322,9.20710678 C7.40236893,8.81658249 7.40236893,8.18341751 7.79289322,7.79289322 C8.18341751,7.40236893 8.81658249,7.40236893 9.20710678,7.79289322 L12.0355339,10.6213203 Z" fill="#000000" />\
     </g>\
 </svg >\</span ></a >';
-                    } else if (data.status == 'Rejected') {
-                        buttons = buttons +
-                            '<a href="/Post/UpdateStatus/' + data.id + '?status=2" tname="#kt_datatable" class="Confirm btn btn-sm btn-clean btn-icon" title="موافقة" >\
+                        } else if (data.status == 'Rejected') {
+                            buttons = buttons +
+                                '<a href="/Post/UpdateStatus/' + data.id + '?status=2" tname="#kt_datatable" class="Confirm btn btn-sm btn-clean btn-icon" title="موافقة" >\
                        <span class="svg-icon svg-icon-success svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Code/Done-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                             <g stroke="none" stroke - width="1" fill = "none" fill - rule="evenodd" >\
               <rect x="0" y="0" width="24" height="24" />\
@@ -155,13 +155,13 @@ var KTDatatableAutoColumnHideDemo = function () {
     </g >\
 </svg ></span>\
                         </a >';
-                    }
+                        }
 
-                    return buttons;
-                       
-                       
-                },
-            }],
+                        return buttons;
+
+
+                    },
+                }],
         });
 
         $('#kt_datatable_search_status').on('change', function () {

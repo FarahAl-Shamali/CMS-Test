@@ -20,7 +20,7 @@ namespace CMS.Data.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal Price { get; set; }
-        public string OwnerId { get; set; }
+        public string? OwnerId { get; set; }
         public User Owner { get; set; }
     }
 }
