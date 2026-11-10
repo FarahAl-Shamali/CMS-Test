@@ -36,8 +36,7 @@ namespace CMS.Web.Controllers
             return Ok(data);
         }
         public async Task<IActionResult> GetContentByMonthChartData()
-        {
-        
+        {        
             var data = await _dashboardService.GetContentByMonthChart();
             return Ok(data);
         }

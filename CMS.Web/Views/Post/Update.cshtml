@@ -76,18 +76,18 @@
         <th>Name</th>
         <th>Action</th>
     </tr>
-    @foreach(var x in Model.PostAttachments) //here
-     {
-         <tr>
-             <th>
-                 @x.AttachmenUrl
-             </th>
-           <th>
-               <a target="_blank" href="~/Images/@x.AttachmenUrl" class="btn btn-info">Go to File</a>
-               <a href="~/post/RemoveAttachment/@x.Id" class="btn btn-danger">Delete</a>
-           </th>
-         </tr> 
-      }
+    @foreach (var x in Model.PostAttachments)
+    {
+        <tr>
+            <th>
+                @x.AttachmenUrl
+            </th>
+            <th>
+                <a target="_blank" href="~/Images/@x.AttachmenUrl" class="btn btn-info">Go to File</a>
+                <a href="~/Post/RemoveAttachment/@x.Id" tname="#kt_datatable"  class="Confirm btn btn-danger">Delete</a>
+            </th>
+        </tr>
+    }
 
 </table>
 

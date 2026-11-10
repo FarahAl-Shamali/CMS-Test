@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DashBoardViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 <div class="card card-custom">
@@ -14,6 +15,7 @@
     <div class="col-md-3">
         <div class="alert alert-info">
         <h3>عدد المستخدمين</h3>
+                    <h3>@Model.NoOfUsers</h3>
         </div>
     </div>
 
@@ -21,6 +23,7 @@
 
                 <div class="alert alert-info ">
                     <h3>عدد الأخبار</h3>
+                    <h3>@Model.NoOfPost</h3>
 
     </div>
     </div>
@@ -28,6 +31,7 @@
     <div class="col-md-3">
                 <div class="alert alert-info">
          <h3>عدد التسجيلات الصوتية</h3>
+                    <h3>@Model.NoOfTrack</h3>
 
     </div>
     </div>
@@ -35,6 +39,7 @@
     <div class="col-md-3">
         <div class="alert alert-info">
           <h3>عدد الاعلانات</h3>
+          <h3>@Model.NoOfAdvertisement</h3>
         </div>
     </div>
 </div>

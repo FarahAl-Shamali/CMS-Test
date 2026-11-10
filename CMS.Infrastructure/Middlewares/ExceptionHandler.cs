@@ -38,13 +38,13 @@ namespace CMS.Infrastructure.Middlewares
                 case EntityNotFoundException _:
                 case OperationFailedException _:
                 case InvalidDateException:
-                    response.msg = $"e:{exception.ToString()}";
+                    response.msg = $"e:{(exception.Message)}";
                     response.close = 0;
                     response.status = 0;
                     break;
                 default:
-                    //response.msg = $"e:حدث خطأ ما";
-                    response.msg = $"e:{exception.Message}";
+                    response.msg = $"e:حدث خطأ ما";
+                    //response.msg = $"e:{exception.Message}";
                     response.close = 0;
                     response.status = 0;
                     var requestBody = string.Empty;
